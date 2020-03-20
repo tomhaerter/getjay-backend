@@ -8,6 +8,7 @@
     "inlineSourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "experimentalDecorators": true,
     "paths": {
       "*": [
         "node_modules/*"
