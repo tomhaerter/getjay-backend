@@ -1,9 +1,9 @@
 import * as admin from "firebase-admin";
 
-let config = {
-    apiKey: process.env.apiKey,
-    authDomain: process.env
-}
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: "https://wirvsvirus-eb4f2.firebaseio.com"
+});
 
 export default function firebaseAuthMiddleware(req, res, next) {
     const authorization = req.header('Authorization');
