@@ -13,6 +13,7 @@
     "dependencies": {
         "@hapi/joi": "^17.1.1",
         "express": "^4.17.1",
+        "firebase-admin": "^8.10.0",
         "source-map-support": "^0.5.16"
     },
     "scripts": {
