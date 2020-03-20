@@ -9,6 +9,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "experimentalDecorators": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "paths": {
       "*": [
         "node_modules/*"
