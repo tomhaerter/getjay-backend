@@ -5,7 +5,7 @@ admin.initializeApp({
   databaseURL: "https://wirvsvirus-eb4f2.firebaseio.com"
 });
 
-export default function firebaseAuthMiddleware(req, res, next) {
+export default async function firebaseAuthMiddleware(req, res, next) {
     const authorization = req.header('Authorization');
     if (authorization) {
         let authToken = authorization.split(' ');

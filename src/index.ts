@@ -35,6 +35,13 @@ const port = process.env.port;
     //add router to express
     app.use('/api/v1', router);
 
+    app.use(((req: express.Request, res: express.Response) => {
+        res.status(404).send({
+            error: "Not found"
+        })
+    }));
+
+
     app.listen(port, () => {
         console.log(`🚀 Server started at http://localhost:${port}`);
     });
