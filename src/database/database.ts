@@ -1,6 +1,6 @@
-import {createConnection, ConnectionOptions} from 'typeorm';
+import {createConnection, ConnectionOptions, getConnectionManager} from 'typeorm';
 import {Connection} from "typeorm/connection/Connection";
-import { environmentVariables } from '../config/environment.config';
+import {environmentVariables} from '../config/environment.config';
 
 export let connection: Connection;
 export const initializeDatabase = async () => {
@@ -11,13 +11,15 @@ export const initializeDatabase = async () => {
         username: environmentVariables.postgresUser,
         password: environmentVariables.postgresPassword,
         database: environmentVariables.postgresDb,
-        entities: ["src/database/entities/**/*.ts"],
+        entities: ["dist/database/entity/**/*.js"],
         synchronize: true,
     };
 
     try {
-        connection = await createConnection(options);
-        console.log('✔️ Connection to Database established.')
+        const connectionManager = getConnectionManager();
+        connection = connectionManager.create(options);
+        await connection.connect();
+        console.log('✔️Connection to Database established.')
 
     } catch (error) {
         console.log('❌ Error: Could not connect to Database');

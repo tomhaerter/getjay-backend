@@ -3,7 +3,7 @@ import Firebase from '../services/firebase';
 import {User} from "../database/entity/user";
 
 
-export async function validateFirebaseIdToken(req: Request, res: Response, next: NextFunction) {
+export async function checkAuthHeader(req: Request, res: Response, next: NextFunction) {
     const token = req.header("Authorization");
 
     if (!token) {
@@ -21,7 +21,6 @@ export async function validateFirebaseIdToken(req: Request, res: Response, next:
             return user;
         }
     } catch (error) {
-
     }
     next();
 }

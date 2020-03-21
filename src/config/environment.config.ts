@@ -1,4 +1,4 @@
-import { port, str, cleanEnv } from "envalid";
+import {port, str, cleanEnv, num} from "envalid";
 
 require("dotenv-flow").config({
   path: process.cwd() + "/environments/"
@@ -20,6 +20,8 @@ cleanEnv(process.env, {
   FIREBASE_STORAGE_BUCKET: str(),
   FIREBASE_MESSAGING_SENDER_ID: str(),
   FIREBASE_APP_ID: str(),
+
+  APP_PORT: num()
 });
 
 export const environmentVariables = {
@@ -40,5 +42,7 @@ export const environmentVariables = {
   firebaseMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   firebaseAppId: process.env.FIREBASE_APP_ID,
   firebaseTestUser: process.env.FIREBASE_TEST_USER,
-  firebaseTestUserPassword: process.env.FIREBASE_TEST_USER_PASSWORD
+  firebaseTestUserPassword: process.env.FIREBASE_TEST_USER_PASSWORD,
+
+  appPort: process.env.APP_PORT
 };

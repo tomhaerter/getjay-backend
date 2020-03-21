@@ -1,7 +1,7 @@
 import express = require("express");
 import * as firebaseAdmin from 'firebase-admin';
 import * as firebase from 'firebase-client';
-import { validateFirebaseIdToken } from "../../../src/middleware/auth.middleware";
+import { checkAuthHeader } from "../../../src/middleware/auth.middleware";
 import Firebase from "../../../src/services/firebase";
 
 let firebaseClient: firebase.app.App;
@@ -9,7 +9,7 @@ let admin: firebaseAdmin.app.App;
 
 describe("firebase auth middleware", () => {
   beforeAll(
-    () => { 
+    () => {
       firebaseClient = Firebase.getInstance().client;
       admin = Firebase.getInstance().admin;
     }
@@ -28,8 +28,8 @@ describe("firebase auth middleware", () => {
     const res: any = {};
     const next = jest.fn();
 
-    await validateFirebaseIdToken(req, res, next);
-    
+    await checkAuthHeader(req, res, next);
+
     expect(req.user).toBeDefined();
     expect(req.user.uid).toBe(uid);
     expect(next).toHaveBeenCalled();

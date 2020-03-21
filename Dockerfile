@@ -3,14 +3,15 @@ ENV NODE_ENV=production
 
 RUN mkdir -p /node/app/node_modules
 WORKDIR /node/app
-COPY package*.json ./
-RUN npm install --only=production \
-    && npm cache clean --force
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install --production \
+    && yarn cache clean --force
 ENV PATH=/node/app/node_modules/.bin:$PATH
 
 FROM base as dev
 ENV NODE_ENV=development
-RUN npm install --only=development
+RUN yarn install
 CMD [ "/node/app/node_modules/.bin/nodemon" ]
 
 FROM dev as build
