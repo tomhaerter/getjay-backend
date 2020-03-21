@@ -4,5 +4,9 @@
     "port": 5432,
     "username": "postgres",
     "password": "wirvsvirus",
-    "database": "postgres"
+    "database": "postgres",
+    "entities": [
+        "dist/database/entity/**/*.js"
+    ],
+    "synchronize": true
 }

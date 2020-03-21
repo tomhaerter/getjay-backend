@@ -1,11 +1,13 @@
+require('reflect-metadata');
 import 'source-map-support/register'
-
 import express from 'express'
 import fs from 'fs'
 
 import {initializeDatabase} from "./database/database";
 import {environmentVariables} from './config/environment.config';
 import path from "path";
+import {validateFirebaseIdToken} from "./middleware/auth.middleware";
+
 
 export const app = express();
 export const router = express.Router();
@@ -33,14 +35,14 @@ export const router = express.Router();
     }
 
     //add router to express
+    app.use(validateFirebaseIdToken);
     app.use('/api/v1', router);
-
     app.use(((req: express.Request, res: express.Response) => {
         res.status(404).send({
             error: "Not found"
         })
     }));
-    
+
     let port = environmentVariables.appPort;
     app.listen(port, () => {
         console.log(`🚀 Server started at http://localhost:${port}`);
