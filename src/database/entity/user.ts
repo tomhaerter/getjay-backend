@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, PrimaryColumn} from "typeorm";
+import {BaseEntity, Column, Entity, PrimaryColumn, RemoveOptions} from "typeorm";
 import * as firebaseAdmin from "firebase-admin";
 
 @Entity()
@@ -11,4 +11,10 @@ export class User extends BaseEntity {
         u.id = firebaseUser.uid;
         return u;
     }
+
+    async remove(options?: RemoveOptions): Promise<this> {
+        //TODO Delete firebase user
+        return super.remove(options)
+    }
+
 }
