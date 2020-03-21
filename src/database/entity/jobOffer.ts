@@ -1,10 +1,11 @@
-import {BaseEntity, Column, Entity, ManyToMany, PrimaryColumn} from "typeorm";
-import shortid from "shortid";
+import {BaseEntity, Column, Entity, ManyToMany, PrimaryColumn, OneToOne, JoinColumn, OneToMany} from "typeorm";
+import shortid from 'shortid';
 import {User} from "./user";
 import {IJobOffer} from "../../types/api/api";
+import { EmployerInformation } from "./employerInformation";
 
 @Entity()
-export class JobOffer extends BaseEntity {
+export class JobOffer extends BaseEntity implements IJobOffer {
     @PrimaryColumn()
     id: string = shortid();
 
@@ -14,6 +15,9 @@ export class JobOffer extends BaseEntity {
     @Column("text", {array: true})
     workdays: Workdays[];
 
+    /**
+     * Hourly payment
+     */
     @Column()
     payment: number;
 
@@ -26,17 +30,33 @@ export class JobOffer extends BaseEntity {
     @Column("text", {array: true})
     requirements: string[];
 
+    /**
+     * The geohash of the location this job offer 
+     */
     @Column()
     geoHash: string;
 
+    /**
+     * Start time of the job in minutes from 0 am.
+     */
     @Column()
     from: number;
 
+    /**
+     * End time of the job in minutes from 0 am.
+     */
     @Column()
     to: number;
 
     @Column()
     image: string;
+
+    @OneToMany(type => EmployerInformation, info => info.jobOffers)
+    @JoinColumn()
+    employer: Promise<EmployerInformation>;
+
+    @Column({nullable: false})
+    employerId: string;
 
     toIJobOffer() {
         return {
@@ -51,6 +71,16 @@ export class JobOffer extends BaseEntity {
             to: this.to,
             image: this.image
         } as IJobOffer
+    }
+
+    /**
+     * Creates a new job offer and saves it in the database
+     * @param jobOffer The job offer
+     */
+    static async createJobOffer(jobOffer: IJobOffer): Promise<JobOffer> {
+        const j = JobOffer.create(jobOffer);
+        await j.save();
+        return j;
     }
 }
 

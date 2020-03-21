@@ -8,6 +8,7 @@ declare global {
     export interface Request {
         firebaseUser?: firebaseAdmin.auth.DecodedIdToken;
         getUser?: () => Promise<User>
+        jobOffer?: any;
     }
   }
 }

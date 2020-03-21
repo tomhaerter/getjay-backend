@@ -4,6 +4,8 @@ import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
 import {authGuard} from "../middleware/authGuard.middleware";
 import {User} from "../database/entity/user";
 import {JobOffer} from "../database/entity/jobOffer";
+import Joi from '@hapi/joi';
+import { IJobOffer } from "../types/api/api";
 
 export default class UserHandler {
     async initialize() {
@@ -38,5 +40,24 @@ export default class UserHandler {
         if (!jobOffer) throw new HttpNotFoundError(`Could not find JobOffer with id ${id}`);
 
         return jobOffer;
+    }
+
+    static async createJobOffer(req: express.Request, res: express.Response) {
+        const schema = Joi.object({
+            employerId: Joi.string().alphanum().required(),
+            categories: Joi.array().items(Joi.number()).min(1).required(),
+            workdays: Joi.array().items(Joi.number()).min(1).required(),
+            payment: Joi.number().greater(0).required(),
+            description: Joi.string(),
+            requirements: Joi.array().items(Joi.string()),
+            geoHash: Joi.string().required(),
+            from: Joi.number().min(0).max(24*60).required(),
+            to: Joi.number().min(0).max(24*60).min(Joi.ref('from')).required(),
+            image: Joi.string(),
+        })
+
+        // TODO: Check if Geohash is valid
+        const post = req.jobOffer;
+        let jobOffer: IJobOffer;
     }
 }

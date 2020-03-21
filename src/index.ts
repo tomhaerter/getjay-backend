@@ -10,6 +10,7 @@ import path from "path";
 import {checkAuthHeader} from "./middleware/auth.middleware";
 import {startRepl} from "./repl";
 import {authGuard} from "./middleware/authGuard.middleware";
+import { environmentVariables } from "./config/environment.config";
 
 export const app = express();
 export const router = express.Router();
