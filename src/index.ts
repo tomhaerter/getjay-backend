@@ -32,7 +32,7 @@ export const router = express.Router();
     for (let key in handlers) {
         const handlerName = handlers[key];
         //make sure file ends with .js
-        if (!/^.*\.js$/.test(handlerName)) {
+        if (!/^.*\.(js|ts)$/.test(handlerName)) {
             continue;
         }
 
