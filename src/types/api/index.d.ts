@@ -25,6 +25,10 @@ export interface IUser {
     workerInformation?: IWorkerInformation;
 }
 
+export interface IOwnUser extends IUser {
+    email: string;
+}
+
 /**
  * Represents additiional information for users, that are employers
  */
@@ -40,9 +44,17 @@ export interface IWorkerInformation {
     id: string;
 }
 
-/**
- * TODO: Document this
- */
-export type IOwnUser = IUser & {
-    email: string;
+export interface IConversation {
+    id: string;
+    workerId: string;
+    jobOfferId: string;
+    messages: IChatMessage[];
+}
+
+export interface IChatMessage {
+    id: string;
+    conversationId: string;
+    message: string;
+    authorId: string;
+    createdAt: number;
 }

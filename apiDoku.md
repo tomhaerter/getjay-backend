@@ -22,7 +22,7 @@ returns `IJobOffer`
 
 ## POST /api/v1/jobOffer/:id/bookmark
 marks the jobOffer as bookmarked
-does not return anything
+does not return anything*
 
 ## GET /api/v1/chat/:offerId
 returns chat conversation from logged in user with job offerer

@@ -1,4 +1,4 @@
-import {authRouter, router} from "../index";
+import {router} from "../index";
 import express from "express"
 import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
 import {authGuard} from "../middleware/authGuard.middleware";
@@ -6,10 +6,9 @@ import {User} from "../database/entity/user";
 
 export default class UserHandler {
     async initialize() {
-        authRouter
-            .get('/user/me', wrap(this.getMe))
-            .get('/user/me/bookmarkedJobOffers', wrap(this.getMyBookmarks));
         router
+            .get('/user/me', authGuard, wrap(this.getMe))
+            .get('/user/me/bookmarkedJobOffers', authGuard, wrap(this.getMyBookmarks))
             .get('/user/:id', wrap(this.getUser));
     }
 

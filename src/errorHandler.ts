@@ -3,6 +3,7 @@ import {RequestHandler} from "express";
 export const wrap = (fn: Function): RequestHandler => {
     return (req, res) => {
         const handleError = (e: Error) => {
+            console.log(e);
             if (isHttpError(e)) {
                 return res.status(e.code).send({error: e.message})
             }
@@ -31,7 +32,7 @@ export const wrap = (fn: Function): RequestHandler => {
 
 
 function isHttpError(obj: any): obj is HttpError {
-    return !!(obj as HttpError).code
+    return !!(obj as HttpError).code && (obj as Error).message !== 'QueryFailedError'
 }
 
 function isEntityNotFoundError(obj: any): obj is HttpNotFoundError {

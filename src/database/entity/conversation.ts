@@ -3,6 +3,8 @@ import shortid from "shortid";
 import {User} from "./user";
 import {ChatMessage} from "./chatMessage";
 import {JobOffer} from "./jobOffer";
+import {HttpNotFoundError} from "../../errorHandler";
+import {IConversation} from "../../types/api";
 
 @Entity()
 export class Conversation extends BaseEntity {
@@ -26,9 +28,22 @@ export class Conversation extends BaseEntity {
     @OneToMany(type => ChatMessage, cm => cm.conversation)
     messages: Promise<ChatMessage[]>;
 
+    @Column()
+    archived: boolean = false;
+
+    async toIConversation() {
+        return {
+            id: this.id,
+            workerId: this.workerId,
+            jobOfferId: this.jobOfferId,
+            messages: (await this.messages).map(msg => msg.toIChatMessage())
+        } as IConversation
+    }
+
     static async getBetween(workerId: string, offerId: string) {
         let conversation = await Conversation.findOne({where: {workerId, offerId}});
         if (!conversation) conversation = await this.createBetween(workerId, offerId);
+        if (conversation.archived) throw new HttpNotFoundError("Chat was archived!");
         return conversation;
     }
 

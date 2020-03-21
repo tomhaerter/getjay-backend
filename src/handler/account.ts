@@ -6,15 +6,15 @@ import {databaseOK} from '../database/database';
 
 export default class StatusHandler {
     async initialize() {
-        router.use("/account/signup", authGuard);
-        router.post("/account/signup", wrap(this.postSignup))
+        router
+            .post("/account/signup", authGuard, wrap(this.postSignup))
     }
-    
+
     async postSignup(req: express.Request, res: express.Response) {
         let ret = {
             status: "OK",
             databaseStatus: databaseOK ? 'OK' : 'Error',
-        }
+        };
         res.send(ret)
     }
 }

@@ -1,18 +1,30 @@
-import {authRouter} from "../index";
+import {router} from "../index";
 import {HttpBadRequestError, HttpForbiddenError, wrap} from "../errorHandler";
 import {Request, Response} from "express";
-import {User} from "../database/entity/user";
 import {Conversation} from "../database/entity/conversation";
 import {JobOffer} from "../database/entity/jobOffer";
 import {ChatMessage} from "../database/entity/chatMessage";
-import jobOffer from "./jobOffer";
 import * as faker from "faker";
+import {authGuard} from "../middleware/authGuard.middleware";
 
 export default class ChatHandler {
     async initialize() {
-        authRouter
-            .get("/chat/:offerId", wrap(this.getChatWith))
-            .post("/chat/:offerId/send", wrap(this.sendChatMessage))
+        router
+            .get("/chat", authGuard, wrap(this.getChats))
+            .get("/chat/:offerId", authGuard, wrap(this.getChatWith))
+            .post("/chat/:offerId/send", authGuard, wrap(this.sendChatMessage))
+    }
+
+    async getChats(req: Request) {
+        const worker = await req.getUser();
+        const chats = await Conversation.find({
+            where: {
+                archived: false,
+                workerId: worker.id
+            }
+        });
+
+        return chats.map(c => c.toIConversation());
     }
 
     async getChatWith(req: Request) {
@@ -21,12 +33,10 @@ export default class ChatHandler {
         const offer = await JobOffer.findOneOrFail({id: req.params.offerId});
 
         const conversation = await Conversation.getBetween(worker.id, offer.id);
-        const msg = await conversation.messages;
-        //convert to IConversation
-        return {...conversation, messages: msg};
+        return conversation.toIConversation();
     }
 
-    //convert to IMessage
+
     async sendChatMessage(req: Request) {
         if (!req.body.message) throw new HttpBadRequestError("No Message");
 
@@ -51,7 +61,7 @@ export default class ChatHandler {
             await response.save();
         }, 5000);
 
-        return chatMessage;
+        return chatMessage.toIChatMessage();
     }
 
 }

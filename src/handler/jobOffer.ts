@@ -1,23 +1,19 @@
-import {authRouter, router} from "../index";
+import {router} from "../index";
 import express from "express"
 import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
-import {authGuard} from "../middleware/authGuard.middleware";
-import {User} from "../database/entity/user";
 import {JobOffer} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
-import { valid } from "joi";
-import { EmployerInformation } from "../database/entity/employerInformation";
+import {authGuard} from "../middleware/authGuard.middleware";
+
 
 export default class JobOfferHandler {
     async initialize() {
         router
             .get('/jobOffer', wrap(this.getJobOffers))
-            .get('/jobOffer/:id', wrap(this.getJobOffer));
-        authRouter
-            .post('/jobOffer/:id/bookmark', wrap(this.bookmarkJobOffer));
-        authRouter
-            .post('/jobOffer/create', wrap(this.createJobOffer))
+            .get('/jobOffer/:id', wrap(this.getJobOffer))
+            .post('/jobOffer/:id/bookmark', authGuard, wrap(this.bookmarkJobOffer))
+            .post('/jobOffer/create', authGuard, wrap(this.createJobOffer))
     }
 
     async getJobOffers(req: express.Request, res: express.Response): Promise<String[]> {
@@ -62,7 +58,7 @@ export default class JobOfferHandler {
         if (validationResult.error) {
             throw new HttpBadRequestError(validationResult.error.message);
         }
-        
+
         // TODO: Check if Geohash is valid
 
         const user = await req.getUser();

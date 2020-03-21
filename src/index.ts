@@ -16,8 +16,6 @@ import {environmentVariables} from "./config/environment.config";
 export const app = express();
 app.use(bodyParser.json());
 export const router = express.Router();
-export const authRouter = express.Router();
-
 
 //async boot
 (async () => {
@@ -28,7 +26,6 @@ export const authRouter = express.Router();
         await devSeed()
     }
 
-    authRouter.use(authGuard);
 
     //import all handlers
     const handlers = fs.readdirSync(path.resolve(__filename, "../handler/"));
@@ -54,8 +51,6 @@ export const authRouter = express.Router();
 
     //add router to express
     app.use(checkAuthHeader);
-
-    app.use('/api/v1', authRouter);
 
     app.use('/api/v1', router);
     app.use(((req: express.Request, res: express.Response) => {

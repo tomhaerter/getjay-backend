@@ -1,4 +1,4 @@
-import {authRouter, router} from "../index";
+import {router} from "../index";
 import express from "express"
 import {wrap} from "../errorHandler";
 import {authGuard} from "../middleware/authGuard.middleware";
@@ -7,10 +7,8 @@ import {databaseOK} from '../database/database';
 export default class StatusHandler {
     async initialize() {
         router
-            .get("/status", wrap(this.getStatus));
-
-        authRouter
-            .get("/status/auth", wrap(this.getAuth));
+            .get("/status", wrap(this.getStatus))
+            .get("/status/auth", authGuard, wrap(this.getAuth));
     }
 
     async getStatus(req: express.Request, res: express.Response) {
