@@ -6,12 +6,10 @@ import express from 'express'
 import fs from 'fs'
 
 import {initializeDatabase} from "./database/database";
-import {environmentVariables} from './config/environment.config';
 import path from "path";
 import {checkAuthHeader} from "./middleware/auth.middleware";
 import {startRepl} from "./repl";
 import {authGuard} from "./middleware/authGuard.middleware";
-
 
 export const app = express();
 export const router = express.Router();

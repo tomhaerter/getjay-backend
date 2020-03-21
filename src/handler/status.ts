@@ -2,6 +2,7 @@ import {authRouter, router} from "../index";
 import express from "express"
 import {wrap} from "../errorHandler";
 import {authGuard} from "../middleware/authGuard.middleware";
+import {databaseOK} from '../database/database';
 
 export default class StatusHandler {
     async initialize() {
@@ -13,7 +14,11 @@ export default class StatusHandler {
     }
 
     async getStatus(req: express.Request, res: express.Response) {
-        res.send({status: "OK"})
+        let ret = {
+            status: "OK",
+            databaseStatus: databaseOK ? 'OK' : 'Error',
+        }
+        res.send(ret)
     }
 
     async getAuth(req: express.Request, res: express.Response) {

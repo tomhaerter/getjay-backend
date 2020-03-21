@@ -10,7 +10,12 @@ to install the dependencies.
 ## Environment variables
 Sensitive data is stored in `.env`-files in a folder called `environments` in the root project.
 Create a folder `environments` in the projct root and create the files `.env.test` and `.env.development` in this folder. Each of these files needs to have the following variables set:
-
+- `POSTGRES_HOST`=[The postgres host. For docker-compose, this is the service name.]
+- `POSTGRES_PASSWORD`=[The password for the postgres database]
+- `POSTGRES_USER`=[The database user]
+- `POSTGRES_DB`=[The name of the database]
+- `POSTGRES_PORT`=[The port on which the database server is listening]
+- `POSTGRES_USE_SSL`=[true or false. If this is enabled, save the postgres certificate as postgres-ca.crt in the environments folder.]
 - `FIREBASE_API_KEY`=[The API key for the firebase project.]
 - `FIREBASE_AUTH_DOMAIN`=[The auth domain for the firebase project.]
 - `FIREBASE_DATABASE_URL`=[The database url for the firebase project.]
