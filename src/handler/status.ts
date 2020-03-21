@@ -17,7 +17,7 @@ export default class StatusHandler {
         let ret = {
             status: "OK",
             databaseStatus: databaseOK ? 'OK' : 'Error',
-        }
+        };
         res.send(ret)
     }
 
