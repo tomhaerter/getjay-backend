@@ -8,11 +8,11 @@ export interface IJobOffer {
     workdays: number[];
     payment: number;
     description: string;
-    requirements: string[];
+    requirements?: string[];
     geoHash: string;
     from: number;
     to: number;
-    image: string;
+    imageURI?: string;
 }
 
 /**

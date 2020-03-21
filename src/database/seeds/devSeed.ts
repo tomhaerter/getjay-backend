@@ -29,7 +29,7 @@ export async function devSeed() {
                 geoHash: '',
                 from: 60*15,
                 to: 60*17+30,
-                image: faker.image.technics(),
+                imageURI: faker.image.technics(),
                 categories: [1, 2],
                 workdays: [0, 1, 4],
                 requirements: []

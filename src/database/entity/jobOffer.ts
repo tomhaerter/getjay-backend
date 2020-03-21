@@ -27,8 +27,8 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     @Column()
     description: string;
 
-    @Column("text", {array: true})
-    requirements: string[];
+    @Column("text", {array: true, nullable: true})
+    requirements?: string[];
 
     /**
      * The geohash of the location this job offer
@@ -48,8 +48,8 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     @Column()
     to: number;
 
-    @Column()
-    image: string;
+    @Column({nullable: true})
+    imageURI?: string;
 
     @OneToMany(type => EmployerInformation, info => info.jobOffers)
     @JoinColumn()
@@ -69,7 +69,7 @@ export class JobOffer extends BaseEntity implements IJobOffer {
             geoHash: this.geoHash,
             from: this.from,
             to: this.to,
-            image: this.image
+            imageURI: this.imageURI
         } as IJobOffer
     }
 

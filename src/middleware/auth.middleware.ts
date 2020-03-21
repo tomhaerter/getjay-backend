@@ -15,12 +15,13 @@ export async function checkAuthHeader(req: Request, res: Response, next: NextFun
         req.getUser = async () => {
             let user = await User.findOne({id: req.firebaseUser.uid});
             if (!user) {
-                user = await User.registerFirebaseUser(req.firebaseUser)
+                user = await User.registerFirebaseUser(req.firebaseUser);
             }
 
             return user;
         }
     } catch (error) {
+        console.log(error);
     }
     next();
 }

@@ -54,7 +54,7 @@ export default class JobOfferHandler {
             image: Joi.string(),
         });
 
-        const validationResult = await schema.validate(req);
+        const validationResult = await schema.validate(req.body);
         if (validationResult.error) {
             throw new HttpBadRequestError(validationResult.error.message);
         }
