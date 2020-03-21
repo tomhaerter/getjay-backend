@@ -8,6 +8,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "sourceMap": true,
     "paths": {
