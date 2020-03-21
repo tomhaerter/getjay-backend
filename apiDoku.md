@@ -23,3 +23,23 @@ returns `IJobOffer`
 ## POST /api/v1/jobOffer/:id/bookmark
 marks the jobOffer as bookmarked
 does not return anything
+
+## GET /api/v1/chat/:offerId
+returns chat conversation from logged in user with job offerer
+
+## POST /api/v1/chat/:offerId
+adds a new chat conversation (worker only!)
+
+## POST /api/v1/jobOffer/create
+creates a new job offer
+
+### Parameters
+- categories: number[] (required, at least one)
+- workdays: number[] (required, at least one)
+- payment: number (required, > 1)
+- description: string (required)
+- requirements: string[] (optional)
+- geoHash: string (required)
+- from: number (required, 0 <= from <= to <= 24*60)
+- to: number (required, 0 <= from <= to <= 24*60)
+- image: string (optional)
