@@ -17,7 +17,7 @@ export default class JobOfferHandler {
         authRouter
             .post('/jobOffer/:id/bookmark', wrap(this.bookmarkJobOffer));
         authRouter
-            .post('/jobOffer', wrap(this.createJobOffer))
+            .post('/jobOffer/create', wrap(this.createJobOffer))
     }
 
     async getJobOffers(req: express.Request, res: express.Response): Promise<String[]> {
