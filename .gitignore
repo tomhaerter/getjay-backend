@@ -1,5 +1,6 @@
 .idea/
 node_modules/
+yarn-error.log
 dist/
 .env
 service-account-credentials.json
