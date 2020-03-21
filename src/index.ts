@@ -4,11 +4,11 @@ import express from 'express'
 import fs from 'fs'
 
 import {initializeDatabase} from "./database/database";
+import {environmentVariables} from './config/environment.config';
 import path from "path";
 
 export const app = express();
 export const router = express.Router();
-const port = process.env.port;
 
 //async boot
 (async () => {
@@ -40,8 +40,8 @@ const port = process.env.port;
             error: "Not found"
         })
     }));
-
-
+    
+    let port = environmentVariables.appPort;
     app.listen(port, () => {
         console.log(`🚀 Server started at http://localhost:${port}`);
     });
