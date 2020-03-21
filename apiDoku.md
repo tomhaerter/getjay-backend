@@ -15,7 +15,7 @@ returns `IJobOffer[]`
 returns `IUser` with corresponding id
 
 ## GET /api/v1/jobOffer?limit=?skip=?search=?categories=?workdays=?from=?to=?geo=?
-returns `number[]`
+returns `IJobOffer[]`
 
 ## GET /api/v1/jobOffer/:id
 returns `IJobOffer`

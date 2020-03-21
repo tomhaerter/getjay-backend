@@ -16,8 +16,8 @@ export default class JobOfferHandler {
             .post('/jobOffer/create', authGuard, wrap(this.createJobOffer))
     }
 
-    async getJobOffers(req: express.Request, res: express.Response): Promise<String[]> {
-        return (await JobOffer.find()).map(a => a.id);
+    async getJobOffers(req: express.Request, res: express.Response): Promise<IJobOffer[]> {
+        return (await JobOffer.find()).map(a => a.toIJobOffer());
     }
 
 
