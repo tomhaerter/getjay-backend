@@ -18,14 +18,11 @@
         "@types/jest": "^25.1.4",
         "envalid": "^6.0.1",
         "express": "^4.17.1",
-<<<<<<< HEAD
         "firebase": "^7.12.0",
         "firebase-admin": "^8.10.0",
         "firebase-client": "^0.1.1",
         "jest": "^25.1.0",
-=======
         "firebase-admin": "^8.10.0",
->>>>>>> d1696cefbea14f87872cc86b5f1e31e94b36c743
         "pg": "^7.18.2",
         "source-map-support": "^0.5.16",
         "typeorm": "^0.2.24"
