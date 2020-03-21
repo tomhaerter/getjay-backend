@@ -5,15 +5,13 @@ require("dotenv-flow").config({
 });
 
 cleanEnv(process.env, {
-  APP_PORT: port(),
-
 //   APP_CERTIFICATE_PASSPHRASE: str(),
 
-//   POSTGRES_PASSWORD: str(),
-//   POSTGRES_HOST: str(),
-//   POSTGRES_USER: str(),
-//   POSTGRES_DB: str(),
-//   POSTGRES_PORT: port(),
+  POSTGRES_PASSWORD: str(),
+  POSTGRES_HOST: str(),
+  POSTGRES_USER: str(),
+  POSTGRES_DB: str(),
+  POSTGRES_PORT: port(),
 
   FIREBASE_API_KEY: str(),
   FIREBASE_AUTH_DOMAIN: str(),
@@ -25,16 +23,14 @@ cleanEnv(process.env, {
 });
 
 export const environmentVariables = {
-  appPort: process.env.APP_PORT,
-
 //   appCertificatePassphrase: process.env.APP_CERTIFICATE_PASSPHRASE,
 
-//   postgresHost: process.env.POSTGRES_HOST,
-//   postgresUser: process.env.POSTGRES_USER,
-//   postgresPassword: process.env.POSTGRES_PASSWORD,
-//   postgresDb: process.env.POSTGRES_DB,
-//   postgresPort: process.env.POSTGRES_PORT,
-//   postgresUseSSL: process.env.POSTGRES_USE_SSL,
+  postgresHost: process.env.POSTGRES_HOST,
+  postgresUser: process.env.POSTGRES_USER,
+  postgresPassword: process.env.POSTGRES_PASSWORD,
+  postgresDb: process.env.POSTGRES_DB,
+  postgresPort: process.env.POSTGRES_PORT,
+  postgresUseSSL: process.env.POSTGRES_USE_SSL,
 
   firebaseApiKey: process.env.FIREBASE_API_KEY,
   firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,

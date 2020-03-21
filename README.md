@@ -11,7 +11,6 @@ to install the dependencies.
 Sensitive data is stored in `.env`-files in a folder called `environments` in the root project.
 Create a folder `environments` in the projct root and create the files `.env.test` and `.env.development` in this folder. Each of these files needs to have the following variables set:
 
-- `APP_PORT`=[The port the API server runs on]
 - `FIREBASE_API_KEY`=[The API key for the firebase project.]
 - `FIREBASE_AUTH_DOMAIN`=[The auth domain for the firebase project.]
 - `FIREBASE_DATABASE_URL`=[The database url for the firebase project.]

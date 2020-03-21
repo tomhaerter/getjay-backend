@@ -5,11 +5,11 @@
     "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "inlineSourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "experimentalDecorators": true,
     "typeRoots": ["./src/types", "./node_modules/@types"],
+    "sourceMap": true,
     "paths": {
       "*": [
         "node_modules/*"

@@ -9,6 +9,7 @@ import path from "path";
 
 export const app = express();
 export const router = express.Router();
+const port = 3000;
 
 //async boot
 (async () => {
@@ -40,8 +41,7 @@ export const router = express.Router();
             error: "Not found"
         })
     }));
-    
-    let port = environmentVariables.appPort;
+
     app.listen(port, () => {
         console.log(`🚀 Server started at http://localhost:${port}`);
     });

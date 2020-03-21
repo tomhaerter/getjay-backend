@@ -3,6 +3,28 @@ services:
     pg:
         image: postgres:alpine
         ports:
-            - 5432:5432
+            - "5432:5432"
         environment:
             - POSTGRES_PASSWORD=wirvsvirus
+            - POSTGRES_USER=wirvsvirus
+            - POSTGRES_DB=wirvsvirus
+            - PG_PORT=5432
+        volumes:
+            - "db-data:/var/lib/postgresql/data"
+    app:
+        build:
+            context: .
+            target: dev
+        ports:
+            - "3000:3000"
+            - "9229:9229" # debug port
+        depends_on:
+            - pg
+        environment:
+            - NODE_ENV=development
+        volumes:
+            - ./:/node/app
+            - /node/app/node_modules
+
+volumes:
+    db-data:
