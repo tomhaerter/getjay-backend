@@ -6,6 +6,8 @@ export let databaseOK = false;
 export let connection: Connection;
 export const initializeDatabase = async () => {
     console.log(environmentVariables.postgresHost);
+
+    const entityPath = (__filename.split('.')[1] === 'ts') ? "src/database/entity/**/*.ts" : "dist/database/entity/**/*.js";
     const options: ConnectionOptions = {
         type: "postgres",
         // url: `postgres://${environmentVariables.postgresUser}:${environmentVariables.postgresPassword}@${environmentVariables.postgresHost}/${environmentVariables.postgresDb}`,
@@ -14,7 +16,7 @@ export const initializeDatabase = async () => {
         username: environmentVariables.postgresUser,
         password: environmentVariables.postgresPassword,
         database: environmentVariables.postgresDb,
-        entities: ["dist/database/entity/**/*.js"],
+        entities: [entityPath],
         synchronize: true,
     };
 

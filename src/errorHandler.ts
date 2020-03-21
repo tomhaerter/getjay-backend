@@ -45,6 +45,7 @@ interface HttpError extends Error {
 export class HttpBadRequestError extends Error {
     code = 400;
     name = "BadRequest";
+    error?: string;
 }
 
 export class HttpForbiddenError extends Error {
@@ -56,5 +57,3 @@ export class HttpNotFoundError extends Error {
     code = 404;
     name = "NotFound";
 }
-
-

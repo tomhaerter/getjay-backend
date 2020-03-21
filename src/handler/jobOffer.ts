@@ -6,6 +6,8 @@ import {User} from "../database/entity/user";
 import {JobOffer} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
+import { valid } from "joi";
+import { EmployerInformation } from "../database/entity/employerInformation";
 
 export default class JobOfferHandler {
     async initialize() {
@@ -14,10 +16,12 @@ export default class JobOfferHandler {
             .get('/jobOffer/:id', wrap(this.getJobOffer));
         authRouter
             .post('/jobOffer/:id/bookmark', wrap(this.bookmarkJobOffer));
+        authRouter
+            .post('/jobOffer', wrap(this.createJobOffer))
     }
 
-    async getJobOffers(req: express.Request, res: express.Response) {
-        return (await JobOffer.find()).map(a => a.id)
+    async getJobOffers(req: express.Request, res: express.Response): Promise<String[]> {
+        return (await JobOffer.find()).map(a => a.id);
     }
 
 
@@ -30,11 +34,10 @@ export default class JobOfferHandler {
         const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
         const user = await req.getUser();
         await user.bookmarkJobOffer(jobOffer);
-
-        return
+        return;
     }
 
-    static async findOneJobOffer(req: express.Request, res: express.Response) {
+    static async findOneJobOffer(req: express.Request, res: express.Response): Promise<JobOffer> {
         const id = req.params.id;
         const jobOffer = await JobOffer.findOne({id});
         if (!jobOffer) throw new HttpNotFoundError(`Could not find JobOffer with id ${id}`);
@@ -42,9 +45,8 @@ export default class JobOfferHandler {
         return jobOffer;
     }
 
-    static async createJobOffer(req: express.Request, res: express.Response) {
+    async createJobOffer(req: express.Request, res: express.Response): Promise<JobOffer> {
         const schema = Joi.object({
-            employerId: Joi.string().alphanum().required(),
             categories: Joi.array().items(Joi.number()).min(1).required(),
             workdays: Joi.array().items(Joi.number()).min(1).required(),
             payment: Joi.number().greater(0).required(),
@@ -54,10 +56,30 @@ export default class JobOfferHandler {
             from: Joi.number().min(0).max(24*60).required(),
             to: Joi.number().min(0).max(24*60).min(Joi.ref('from')).required(),
             image: Joi.string(),
-        })
+        });
 
+        const validationResult = await schema.validate(req);
+        if (validationResult.error) {
+            throw new HttpBadRequestError(validationResult.error.message);
+        }
+        
         // TODO: Check if Geohash is valid
-        const post = req.jobOffer;
-        let jobOffer: IJobOffer;
+
+        const user = await req.getUser();
+
+        // const employerInformation = await EmployerInformation.findOne({
+        //     where: {
+        //         uid: user.id,
+        //     },
+        //     relations: ['users']
+        // });
+
+        const j = validationResult.value as IJobOffer;
+        j.employerId = user.id;
+        // j.employer = employerInformation;
+
+        const jobOffer = await JobOffer.createJobOffer(j);
+        if (!jobOffer) throw new HttpBadRequestError();
+        return jobOffer;
     }
 }
