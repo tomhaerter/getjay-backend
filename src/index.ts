@@ -4,10 +4,8 @@ import express from 'express'
 import fs from 'fs'
 
 import {initializeDatabase} from "./database/database";
-import {environmentVariables} from './config/environment.config';
 import path from "path";
 import {validateFirebaseIdToken} from "./middleware/auth.middleware";
-
 
 export const app = express();
 export const router = express.Router();
@@ -44,10 +42,6 @@ const port = 3000;
         })
     }));
 
-<<<<<<< HEAD
-=======
-    let port = environmentVariables.appPort;
->>>>>>> ca714cb018291c27d2bb545dcc90cf01546560f4
     app.listen(port, () => {
         console.log(`🚀 Server started at http://localhost:${port}`);
     });

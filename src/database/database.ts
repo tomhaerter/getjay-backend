@@ -4,8 +4,10 @@ import { environmentVariables } from '../config/environment.config';
 
 export let connection: Connection;
 export const initializeDatabase = async () => {
+    console.log(environmentVariables.postgresHost)
     const options: ConnectionOptions = {
         type: "postgres",
+        // url: `postgres://${environmentVariables.postgresUser}:${environmentVariables.postgresPassword}@${environmentVariables.postgresHost}/${environmentVariables.postgresDb}`,
         host: environmentVariables.postgresHost,
         port: Number(environmentVariables.postgresPort),
         username: environmentVariables.postgresUser,
@@ -17,7 +19,7 @@ export const initializeDatabase = async () => {
 
     try {
         connection = await createConnection(options);
-        console.log('✔️ Connection to Database established.')
+        console.log('✔️ Connection to Database established.');
 
     } catch (error) {
         console.log('❌ Error: Could not connect to Database');

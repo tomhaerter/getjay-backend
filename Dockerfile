@@ -3,7 +3,8 @@ ENV NODE_ENV=production
 
 RUN mkdir -p /node/app/node_modules
 WORKDIR /node/app
-COPY package*.json ./
+COPY package.json ./package.json
+COPY yarn.lock ./yarn.lock
 RUN npm install --only=production \
     && npm cache clean --force
 ENV PATH=/node/app/node_modules/.bin:$PATH
