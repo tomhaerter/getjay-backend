@@ -11,7 +11,7 @@ export async function devSeed() {
     if ((await JobOffer.count()) === 0) {
         for (let i = 0; i < 10; i++) {
             const employerInformation = new EmployerInformation();
-            employerInformation.save();
+            await employerInformation.save();
             const employer = new User();
             Object.assign(employer, {
                 id: 'a' + i.toString(),
@@ -20,11 +20,11 @@ export async function devSeed() {
                 email: faker.internet.email(),
                 bookmarkedJobOffers: [],
             });
-            employer.save();
+            await employer.save();
 
             const offer = JobOffer.create({
                 payment: 1,
-                
+                employerId: employer.id,
                 description: faker.lorem.words(50),
                 geoHash: '',
                 from: 60*15,

@@ -5,9 +5,9 @@ import {authGuard} from "../middleware/authGuard.middleware";
 import {User} from "../database/entity/user";
 import {JobOffer} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
-import { IJobOffer } from "../types/api/api";
+import { IJobOffer } from "../types/api";
 
-export default class UserHandler {
+export default class JobOfferHandler {
     async initialize() {
         router
             .get('/jobOffer', wrap(this.getJobOffers))
@@ -22,12 +22,12 @@ export default class UserHandler {
 
 
     async getJobOffer(req: express.Request, res: express.Response) {
-        const jobOffer = await UserHandler.findOneJobOffer(req, res);
+        const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
         return jobOffer.toIJobOffer()
     }
 
     async bookmarkJobOffer(req: express.Request, res: express.Response) {
-        const jobOffer = await UserHandler.findOneJobOffer(req, res);
+        const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
         const user = await req.getUser();
         await user.bookmarkJobOffer(jobOffer);
 

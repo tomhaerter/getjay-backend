@@ -1,7 +1,7 @@
 import {BaseEntity, Column, Entity, ManyToMany, PrimaryColumn, OneToOne, JoinColumn, OneToMany} from "typeorm";
 import shortid from 'shortid';
 import {User} from "./user";
-import {IJobOffer} from "../../types/api/api";
+import {IJobOffer} from "../../types/api";
 import { EmployerInformation } from "./employerInformation";
 
 @Entity()
@@ -31,7 +31,7 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     requirements: string[];
 
     /**
-     * The geohash of the location this job offer 
+     * The geohash of the location this job offer
      */
     @Column()
     geoHash: string;

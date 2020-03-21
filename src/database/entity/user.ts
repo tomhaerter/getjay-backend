@@ -2,7 +2,7 @@ import {BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryColumn, Remove
 import * as firebaseAdmin from "firebase-admin";
 import Firebase from "../../services/firebase";
 import {JobOffer} from "./jobOffer";
-import {IOwnUser, IUser} from "../../types/api/api";
+import {IOwnUser, IUser} from "../../types/api";
 import { EmployerInformation } from "./employerInformation";
 import { WorkerInformation } from "./workerInformation";
 

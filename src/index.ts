@@ -4,15 +4,17 @@ require('reflect-metadata');
 import 'source-map-support/register'
 import express from 'express'
 import fs from 'fs'
+import bodyParser from 'body-parser'
 
 import {initializeDatabase} from "./database/database";
 import path from "path";
 import {checkAuthHeader} from "./middleware/auth.middleware";
 import {startRepl} from "./repl";
 import {authGuard} from "./middleware/authGuard.middleware";
-import { environmentVariables } from "./config/environment.config";
+import {environmentVariables} from "./config/environment.config";
 
 export const app = express();
+app.use(bodyParser.json());
 export const router = express.Router();
 export const authRouter = express.Router();
 
