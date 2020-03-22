@@ -17,6 +17,7 @@ export default class JobOfferHandler {
             .post('/jobOffer/create', authGuard, wrap(this.createJobOffer))
             //worker
             .post('/jobOffer/:id/bookmark', authGuard, wrap(this.bookmarkJobOffer))
+            .post('/jobOffer/:id/unbookmark', authGuard, wrap(this.unBookmarkJobOffer))
             .post('/jobOffer/:id/accept', authGuard, wrap(this.acceptJobOffer))
             .post('/jobOffer/:id/reject', authGuard, wrap(this.rejectJobOffer))
     }
@@ -58,6 +59,13 @@ export default class JobOfferHandler {
         const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
         const user = await req.getUser();
         await user.bookmarkJobOffer(jobOffer);
+        return;
+    }
+
+    async unBookmarkJobOffer(req: express.Request, res: express.Response) {
+        const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
+        const user = await req.getUser();
+        await user.unBookmarkJobOffer(jobOffer);
         return;
     }
 

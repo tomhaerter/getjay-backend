@@ -1,10 +1,9 @@
 import {router} from "../index";
 import {HttpBadRequestError, HttpForbiddenError, wrap} from "../errorHandler";
-import {Request, Response} from "express";
+import {Request} from "express";
 import {Conversation} from "../database/entity/conversation";
 import {JobOffer} from "../database/entity/jobOffer";
 import {ChatMessage} from "../database/entity/chatMessage";
-import * as faker from "faker";
 import {authGuard} from "../middleware/authGuard.middleware";
 
 export default class ChatHandler {
@@ -24,9 +23,17 @@ export default class ChatHandler {
             }
         });
 
-        return chats.map(c => c.toIConversation());
+        const out = [];
+        for (let i = 0; i < chats.length; i++) {
+            out.push(await chats[i].toIConversation())
+        }
+        return out
     }
 
+    /**
+     * Get chat between a worker and a job offer(employee)
+     * @param req
+     */
     async getChatWith(req: Request) {
         const worker = await req.getUser();
         if (!await worker.isWorker()) throw new HttpForbiddenError("You are not an worker!");
@@ -57,7 +64,7 @@ export default class ChatHandler {
             const response = new ChatMessage();
             response.authorId = offer.employerId;
             response.conversationId = conversation.id;
-            response.message = faker.hacker.phrase();
+            response.message = getRandomChatMessage(worker.firstName);
             await response.save();
         }, 5000);
 
@@ -65,3 +72,14 @@ export default class ChatHandler {
     }
 
 }
+
+
+const getRandomChatMessage = function (name: string) {
+    const msgs = [`Hallo ${name}, vielen Dank für dein Interesse. Unser Team hier im Supermarkt braucht dringend Unterstützung. Wann kannst du anfangen?`,
+        `Hallo ${name}, wir freuen uns, dass Sie so kurzfristig in unserer Kanzlei aushelfen können. Wann hätten sie Zeit für ein kurzes Skype-Gespräch?`,
+        `Hi ${name}, freut uns riesig, dass du hier im Tierheim aushelfen willst - es ist wirklich Not am Mann! Kannst du morgen Mittag vorbei kommen?`,
+        `Hallo ${name}, hast du Erfahrung mit Tieren?`,
+        `Hallo ${name}, möchtest du gleich diese Woche anfangen?`];
+
+    return msgs[Math.floor(Math.random() * msgs.length)];
+};

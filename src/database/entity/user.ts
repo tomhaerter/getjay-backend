@@ -72,6 +72,12 @@ export class User extends BaseEntity {
         return this.save();
     }
 
+    async unBookmarkJobOffer(jobOffer: JobOffer) {
+        const bookmarkedJobOffers = await this.bookmarkedJobOffers;
+        this.bookmarkedJobOffers = Promise.resolve(bookmarkedJobOffers.filter(a => a.id !== jobOffer.id));
+        return this.save();
+    }
+
     /**
      * Adds a job offer to the list of accepted job offers
       * @param jobOffer
