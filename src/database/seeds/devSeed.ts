@@ -3,6 +3,17 @@ import {JobOffer} from "../entity/jobOffer";
 import faker from 'faker';
 import { EmployerInformation } from "../entity/employerInformation";
 
+function getRandomSubarray(arr: any[], size: number) {
+    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, size);
+}
+
 export async function devSeed() {
     if (process.env.NODE_ENV !== 'development') {
         throw Error("Trying to seed dev into non dev db!")
@@ -33,8 +44,8 @@ export async function devSeed() {
                 from: from,
                 to: to,
                 imageURI: `https://picsum.photos/id/${Math.floor(Math.random()*30+100)}/600/300`,
-                categories: [1, 2],
-                workdays: [0, 1, 4],
+                categories: getRandomSubarray([0, 1, 2, 3, 4], 1),
+                workdays: getRandomSubarray([0, 1, 2, 3, 4, 5, 6], 3),
                 requirements: []
             });
             await offer.save();
