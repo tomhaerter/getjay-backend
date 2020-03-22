@@ -3,9 +3,9 @@ import {JobOffer} from "../entity/jobOffer";
 import faker from 'faker';
 import { EmployerInformation } from "../entity/employerInformation";
 
-export async function devSeed() {
-    if (process.env.NODE_ENV !== 'development') {
-        throw Error("Trying to seed dev into non dev db!")
+export async function prodSeed() {
+    if (process.env.NODE_ENV !== 'production') {
+        throw Error("Trying to seed prod into non prod db!")
     }
 
     if ((await JobOffer.count()) === 0) {

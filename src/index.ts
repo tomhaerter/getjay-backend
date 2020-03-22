@@ -13,6 +13,7 @@ import {startRepl} from "./repl";
 import {authGuard} from "./middleware/authGuard.middleware";
 import {environmentVariables} from "./config/environment.config";
 import {registerCors} from "./middleware/cors.middleware";
+import {prodSeed} from "./database/seeds/prodSeed";
 
 export const app = express();
 app.use(bodyParser.json());
@@ -25,6 +26,10 @@ export const router = express.Router();
 
     if (process.env.NODE_ENV === 'development') {
         await devSeed()
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+        await prodSeed();
     }
 
     registerCors();
