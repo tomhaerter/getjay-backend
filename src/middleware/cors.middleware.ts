@@ -9,7 +9,7 @@ export function registerCors() {
         allowedHeaders: ['Authorization'],
 
     });
-    app.use((req, res, next) => {
+    app.options('*', (req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', 'https://getjay.fourfive.studio');
         next();
     });
