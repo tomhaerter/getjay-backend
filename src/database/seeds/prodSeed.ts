@@ -39,7 +39,7 @@ export async function prodSeed() {
 
         await createOffer({
             title: "Lidl",
-            payment: 12.5,
+            payment: 12,
             description: "Bei Lidl im Verkauf arbeiten heißt: jeden Tag für zufriedene Kunden sorgen. Dabei alles geben und immer besser werden. Weiterkommen als woanders. Weil bei uns jeder zählt und wir uns gegenseitig etwas zutrauen. Gemeinsam anpacken, zupacken und immer noch was draufpacken. Und dafür fair bezahlt werden.<br> Deine Aufgaben:<br> *Mit einem Lächeln im Gesicht packst du tatkräftig mit an und unterstützt dein Team bei der täglichen Warenverräumung<br> * Du unterstützt unsere Mitarbeiter stundenweise, hauptsächlich in den Morgen- oder Abendstunden, bei der Bereitstellung frischer Ware und sorgst so für ein gepflgtes Filialbild <br> * Damit leistest du einen entscheidenden Beitrag für ein rundum angenehmes Einkaufserlebnis unserer Kunden<br> *Wir bieten dir ein sicheres, festes Einkommen von mindestens 12,50 €/Stunde",
             from: 60 * 5,
             to: 60 * 8,
@@ -48,7 +48,7 @@ export async function prodSeed() {
 
         await createOffer({
                 title: "U.K.A. Facility Service GmbH",
-                payment: 15.5,
+                payment: 15,
                 description: "Ich suche einen Mitarbeiter Gartenbau (m/w/d) zur Unterstützung für die Betreuung von Gartenarbeiten, Mithilfe von Umsetzen von Gartenbauprojekten für Wohngebäude und Bürogebäude. Handwerkliche Kenntnisse sind von Vorteil, aber keine Bedingung, kann angelernt werden.<br>Gärtnerische Tätigkeiten müssen in bestehenden Objekten übernommen werden (Heckenschnitt,Rasen mähen, Anpflanzungen etc.)<br>*Führerschein Klasse 3 oder B erwünscht.<br>*Gute Deutschkenntnisse sind wünschenswert<br>Weitere Informationen erhalten Sie auf Anfrage",
                 from: 60 * 7 + 30,
                 to: 60 * 15,
