@@ -21,14 +21,15 @@ export async function devSeed() {
                 bookmarkedJobOffers: [],
             });
             await employer.save();
-
+            const from = Math.floor(Math.min(24*60, Math.max(0, 60*24*(Math.random()-0.2))));
+            const to = Math.floor(Math.min(24*60, Math.max(0, from + 60*24*Math.random() - 0.5)));
             const offer = JobOffer.create({
                 payment: 1,
                 employerId: employer.id,
                 description: faker.lorem.words(50),
                 geoHash: '',
-                from: 60*15,
-                to: 60*17+30,
+                from: from,
+                to: to,
                 imageURI: faker.image.technics(),
                 categories: [1, 2],
                 workdays: [0, 1, 4],

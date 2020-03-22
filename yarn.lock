@@ -1038,6 +1038,11 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
 
+"@types/unl-core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/unl-core/-/unl-core-1.0.0.tgz#bcc67e459728acc909b607893b8deb00bdca6d8f"
+  integrity sha512-Ero4iD17K/VClYoW6RYU3xJsnwpnjhN71+Pu5cfWN1bG6Xlz7kCPaP5PTjCLhB8RibwxNgknu9nTyCwzdCDtvQ==
+
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
@@ -6027,6 +6032,11 @@ unique-string@^2.0.0:
   integrity sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==
   dependencies:
     crypto-random-string "^2.0.0"
+
+unl-core@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/unl-core/-/unl-core-1.0.1.tgz#1a101e8e420463a63242698f81a1d2983397168c"
+  integrity sha512-rAEBSL5QpqwIxtlzIAWg3S72W2/nEhkkULJFI1GbOGFF+oegs2myE3ustGW7qPEX4Ug0f7H/W4qIz3dFnweI5w==
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
