@@ -3,6 +3,7 @@
  */
 export interface IJobOffer {
     id: string;
+    title: string;
     employerId: string;
     categories: number[];
     workdays: number[];

@@ -71,6 +71,7 @@ export default class JobOfferHandler {
 
     async createJobOffer(req: express.Request, res: express.Response): Promise<JobOffer> {
         const schema = Joi.object({
+            title: Joi.string().required(),
             categories: Joi.array().items(Joi.number()).min(1).required(),
             workdays: Joi.array().items(Joi.number()).min(1).required(),
             payment: Joi.number().greater(0).required(),

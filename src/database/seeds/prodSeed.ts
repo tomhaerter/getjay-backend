@@ -24,6 +24,7 @@ export async function prodSeed() {
             await employer.save();
 
             const offer = JobOffer.create({
+                title: faker.company.companyName(),
                 payment: 1,
                 employerId: employer.id,
                 description: faker.lorem.words(50),

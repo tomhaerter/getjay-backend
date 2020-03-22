@@ -9,6 +9,9 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     @PrimaryColumn()
     id: string = shortid();
 
+    @Column()
+    title: string;
+
     @Column("text", {array: true})
     categories: Category[];
 
@@ -64,6 +67,7 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     toIJobOffer() {
         return {
             id: this.id,
+            title: this.title,
             categories: this.categories,
             workdays: this.workdays,
             payment: this.payment,
