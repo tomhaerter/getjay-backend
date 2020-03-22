@@ -21,7 +21,7 @@ RUN tsc
 FROM base as prod
 # Copy compiled code
 COPY --from=build /node/app/dist .
-CMD [ "node", "server.js" ]
+CMD [ "node", "index.js" ]
 
 FROM dev as test
 ENV NODE_ENV=test
