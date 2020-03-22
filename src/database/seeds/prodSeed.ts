@@ -30,7 +30,7 @@ export async function prodSeed() {
                 geoHash: '',
                 from: 60*15,
                 to: 60*17+30,
-                imageURI: "https://picsum.photos/400/200",
+                imageURI: `https://picsum.photos/${Math.floor(Math.random()*1000)}/1000/200`,
                 categories: [1, 2],
                 workdays: [0, 1, 4],
                 requirements: []
