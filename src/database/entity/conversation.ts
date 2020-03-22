@@ -40,11 +40,20 @@ export class Conversation extends BaseEntity {
         } as IConversation
     }
 
-    static async getBetween(workerId: string, offerId: string) {
+    static async getBetween(workerId: string, offerId: string, create = false) {
         let conversation = await Conversation.findOne({where: {workerId, offerId}});
+        if (!create) {
+            if (!conversation) throw new HttpNotFoundError("Chat not found");
+            if (conversation.archived) throw new HttpNotFoundError("Chat was archived!");
+            return conversation;
+        }
         if (!conversation) conversation = await this.createBetween(workerId, offerId);
-        if (conversation.archived) throw new HttpNotFoundError("Chat was archived!");
-        return conversation;
+        if (conversation.archived) {
+            conversation.archived = false;
+            await conversation.save();
+        }
+
+        return conversation
     }
 
     private static async createBetween(workerId: string, jobOfferId: string) {

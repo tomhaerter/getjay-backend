@@ -11,8 +11,11 @@ export class WorkerInformation extends BaseEntity {
     @OneToOne(type => User, user => user.workerInformation)
     user: Promise<User>;
 
-    @Column({ nullable: false })
+    @Column()
     workerInformationId: number;
+
+    @Column({nullable: true})
+    telNumber: string|null;
 
     async toIWorkerInformation(): Promise<IWorkerInformation> {
         return {

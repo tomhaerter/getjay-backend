@@ -24,6 +24,9 @@ export class JobOffer extends BaseEntity implements IJobOffer {
     @ManyToMany(type => User, user => user.bookmarkedJobOffers)
     usersBookmarked: Promise<User[]>;
 
+    @ManyToMany(type => User, user => user.acceptedJobOffers)
+    usersAccepted: Promise<User[]>;
+
     @Column()
     description: string;
 

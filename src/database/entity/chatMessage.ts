@@ -26,14 +26,14 @@ export class ChatMessage extends BaseEntity {
     @JoinColumn()
     author: Promise<User>;
 
-    @Column({type: "timestamp"})
+    @Column({type: "bigint"})
     createdAt: number = Date.now();
 
     toIChatMessage() {
         return {
             id: this.id,
             conversationId: this.conversationId,
-            message: this.authorId,
+            message: this.message,
             createdAt: this.createdAt
         } as IChatMessage
     }

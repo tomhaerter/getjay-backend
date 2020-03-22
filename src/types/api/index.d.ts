@@ -20,7 +20,8 @@ export interface IJobOffer {
  */
 export interface IUser {
     id: string;
-    name: string;
+    firstName: string,
+    lastName: string,
     employerInformation?: IEmployerInformation;
     workerInformation?: IWorkerInformation;
 }

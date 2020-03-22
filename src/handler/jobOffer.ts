@@ -1,10 +1,11 @@
 import {router} from "../index";
-import express from "express"
+import express, {Request, Response} from "express"
 import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
 import {JobOffer} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
 import {authGuard} from "../middleware/authGuard.middleware";
+import {Conversation} from "../database/entity/conversation";
 
 
 export default class JobOfferHandler {
@@ -12,9 +13,36 @@ export default class JobOfferHandler {
         router
             .get('/jobOffer', wrap(this.getJobOffers))
             .get('/jobOffer/:id', wrap(this.getJobOffer))
-            .post('/jobOffer/:id/bookmark', authGuard, wrap(this.bookmarkJobOffer))
+            //employer
             .post('/jobOffer/create', authGuard, wrap(this.createJobOffer))
+            //worker
+            .post('/jobOffer/:id/bookmark', authGuard, wrap(this.bookmarkJobOffer))
+            .post('/jobOffer/:id/accept', authGuard, wrap(this.acceptJobOffer))
+            .post('/jobOffer/:id/reject', authGuard, wrap(this.rejectJobOffer))
     }
+
+    async acceptJobOffer(req: Request) {
+        const jobOffer = await JobOffer.findOneOrFail({id: req.params.id});
+        const user = await req.getUser();
+
+        await user.acceptJobOffer(jobOffer);
+        const conversation = await Conversation.getBetween(user.id, jobOffer.id, true);
+        return conversation.toIConversation();
+    }
+
+    async rejectJobOffer(req: Request) {
+        const jobOffer = await JobOffer.findOneOrFail({id: req.params.id});
+        const user = await req.getUser();
+
+        await user.rejectJobOffer(jobOffer);
+
+        //archive conversation
+        const conversation = await Conversation.getBetween(user.id, jobOffer.id);
+        conversation.archived = true;
+        await conversation.save();
+        return;
+    }
+
 
     async getJobOffers(req: express.Request, res: express.Response): Promise<IJobOffer[]> {
         return (await JobOffer.find()).map(a => a.toIJobOffer());

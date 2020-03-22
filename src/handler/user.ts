@@ -9,6 +9,7 @@ export default class UserHandler {
         router
             .get('/user/me', authGuard, wrap(this.getMe))
             .get('/user/me/bookmarkedJobOffers', authGuard, wrap(this.getMyBookmarks))
+            .get('/user/me/acceptedJobOffers', authGuard, wrap(this.getAcceptedJobOffers))
             .get('/user/:id', wrap(this.getUser));
     }
 
@@ -20,6 +21,12 @@ export default class UserHandler {
         const user = await req.getUser();
         const bookmarks = await user.bookmarkedJobOffers;
         return bookmarks.map(a => a.toIJobOffer())
+    }
+
+    async getAcceptedJobOffers(req: express.Request) {
+        const user = await req.getUser();
+        const acceptedJobOffers = await user.acceptedJobOffers;
+        return acceptedJobOffers.map(a => a.toIJobOffer())
     }
 
     async getUser(req: express.Request, res: express.Response) {

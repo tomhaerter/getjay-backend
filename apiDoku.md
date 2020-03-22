@@ -22,7 +22,15 @@ returns `IJobOffer`
 
 ## POST /api/v1/jobOffer/:id/bookmark
 marks the jobOffer as bookmarked
-does not return anything*
+does not return anything
+
+## POST /api/v1/jobOffer/:id/accept
+marks the jobOffer as accepted, creates new conversation
+returns `IConversation`
+
+## POST /api/v1/jobOffer/:id/reject
+marks the jobOffer as rejected, archives conversation
+does not return anything
 
 ## GET /api/v1/chat/:offerId
 returns chat conversation from logged in user with job offerer

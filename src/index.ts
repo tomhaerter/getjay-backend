@@ -12,6 +12,7 @@ import {checkAuthHeader} from "./middleware/auth.middleware";
 import {startRepl} from "./repl";
 import {authGuard} from "./middleware/authGuard.middleware";
 import {environmentVariables} from "./config/environment.config";
+import {registerCors} from "./middleware/cors.middleware";
 
 export const app = express();
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ export const router = express.Router();
         await devSeed()
     }
 
+    registerCors();
 
     //import all handlers
     const handlers = fs.readdirSync(path.resolve(__filename, "../handler/"));

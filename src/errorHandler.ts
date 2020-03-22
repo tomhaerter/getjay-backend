@@ -32,7 +32,7 @@ export const wrap = (fn: Function): RequestHandler => {
 
 
 function isHttpError(obj: any): obj is HttpError {
-    return !!(obj as HttpError).code && (obj as Error).message !== 'QueryFailedError'
+    return !!(obj as HttpError).code && (obj as Error).name !== 'QueryFailedError'
 }
 
 function isEntityNotFoundError(obj: any): obj is HttpNotFoundError {

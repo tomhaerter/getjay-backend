@@ -5,14 +5,18 @@ import {JobOffer} from "./jobOffer";
 import {IOwnUser, IUser} from "../../types/api";
 import { EmployerInformation } from "./employerInformation";
 import { WorkerInformation } from "./workerInformation";
+import jobOffer from "../../handler/jobOffer";
 
 @Entity()
 export class User extends BaseEntity {
     @PrimaryColumn()
     id: string;
 
-    @Column({nullable: true})
-    name?: string;
+    @Column()
+    firstName: string;
+
+    @Column()
+    lastName: string;
 
     @Column()
     email: string;
@@ -20,6 +24,10 @@ export class User extends BaseEntity {
     @ManyToMany(type => JobOffer, jobOffer => jobOffer.usersBookmarked)
     @JoinTable()
     bookmarkedJobOffers: Promise<JobOffer[]>;
+
+    @ManyToMany(type => JobOffer, jobOffer => jobOffer.usersAccepted)
+    @JoinTable()
+    acceptedJobOffers: Promise<JobOffer[]>;
 
     @OneToOne(type => EmployerInformation, employerInformation => employerInformation.user)
     @JoinColumn()
@@ -41,7 +49,8 @@ export class User extends BaseEntity {
     async toIOwnUser(): Promise<IOwnUser> {
         return {
             id: this.id,
-            name: this.name,
+            firstName: this.firstName,
+            lastName: this.lastName,
             email: this.email
         } as IOwnUser
     }
@@ -49,7 +58,8 @@ export class User extends BaseEntity {
     async toIUser(): Promise<IUser> {
         return {
             id: this.id,
-            name: this.name
+            firstName: this.firstName,
+            lastName: this.lastName,
         } as IUser
     }
 
@@ -63,9 +73,29 @@ export class User extends BaseEntity {
     }
 
     /**
+     * Adds a job offer to the list of accepted job offers
+      * @param jobOffer
+     */
+    async acceptJobOffer(jobOffer: JobOffer) {
+        (await this.acceptedJobOffers).push(jobOffer);
+        return this.save();
+    }
+
+    /**
+     * Removes a job offer to the list of accepted job offers
+     * @param jobOffer
+     */
+    async rejectJobOffer(jobOffer: JobOffer) {
+        const jobOffers = await this.acceptedJobOffers;
+        this.acceptedJobOffers = Promise.resolve(jobOffers.filter(a => a.id !== jobOffer.id));
+        return this.save();
+    }
+
+    /**
      * @returns true, when user is an employer, otherwise false
      */
     async isEmployer(): Promise<boolean> {
+        //todo set false
         return true;
     }
 
@@ -86,7 +116,9 @@ export class User extends BaseEntity {
         u.id = firebaseToken.uid;
 
         const firebaseUser = await u.getFirebaseUser();
-        u.name = firebaseUser.displayName;
+        const name = firebaseUser.displayName.split(" ");
+        u.firstName = name[0];
+        u.lastName = firebaseUser.displayName.split(" ").slice(1).join(" ");
         u.email = firebaseUser.email;
 
         await u.save();

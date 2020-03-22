@@ -16,7 +16,8 @@ export async function devSeed() {
             Object.assign(employer, {
                 id: 'a' + i.toString(),
                 employerInformation: employerInformation,
-                name: faker.name.firstName(),
+                firstName: faker.name.firstName(),
+                lastName: faker.name.lastName(),
                 email: faker.internet.email(),
                 bookmarkedJobOffers: [],
             });
