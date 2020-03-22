@@ -36,6 +36,7 @@ export class ChatMessage extends BaseEntity {
             conversationId: this.conversationId,
             message: this.message,
             createdAt: this.createdAt,
+            authorId: this.authorId,
             authorName: au.firstName + " " + au.lastName,
             authorImageUri: au.profilePicture,
         } as IChatMessage
