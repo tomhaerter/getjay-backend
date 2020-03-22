@@ -106,7 +106,7 @@ export default class JobOfferHandler {
             throw new HttpBadRequestError(validationResult.error.message);
         }
 
-        const jobOffer = await JobOfferHandler.findOneJobOffer(validationResult.value, res);
+        const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
         return jobOffer.toIJobOffer();
     }
 
