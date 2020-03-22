@@ -20,12 +20,12 @@ returns `IJobOffer[]`
 ### Request params
 - skip: Offset (pagination) from where entities should be taken (integer, not required)
 - take: Limit (pagination) - max number of entities that shuld be taken (integer, not required)
-- search: Volltextsuche
-- workdays: 
-- categories
+- search: Full text search in description
+- workdays: The workdays (monday = 0, sunday = 6, not required)
+- categories: The categories
 - from: The start time in msnutes from 0 am  (integer, not required, 0 <= from <= to <= 24*60)
 - to: The end time in minutes from 0 am (integer, not required, 0 <= from <= to <= 24*60)
-- geo: Koordinaten 30 km Umkreis (string, required)
+- geo: coordinates of the offer as geohash (string, not required)
 
 ## GET /api/v1/jobOffer/:id
 returns `IJobOffer`
