@@ -6,7 +6,7 @@ import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
 import {authGuard} from "../middleware/authGuard.middleware";
 import Geohash from 'unl-core';
-import { MoreThan, MoreThanOrEqual, LessThanOrEqual, In } from "typeorm";
+import { MoreThan, MoreThanOrEqual, LessThanOrEqual, In, Like } from "typeorm";
 import { valid } from "joi";
 
 export default class JobOfferHandler {
@@ -44,6 +44,7 @@ export default class JobOfferHandler {
             where: {
                 from: MoreThanOrEqual(from),
                 to: LessThanOrEqual(to),
+                description: validationResult.value.search ? Like(`${validationResult.value.search}`) : undefined,
             },
         });
 
