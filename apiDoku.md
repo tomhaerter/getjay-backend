@@ -59,13 +59,13 @@ adds a new chat conversation (worker only!)
 creates a new job offer
 returns `JobOffer`
 
-### Request body parameters
+### Post body parameters
 - categories: number[] (required, at least one)
 - workdays: number[] (required, at least one)
 - payment: number (required, > 1)
 - description: string (required)
 - requirements: string[] (optional)
-- geoHash: string (required)
+- geoHash: a geo hash with at least 7 characters (accuracy of ~150m), string (required)
 - from: number (required, 0 <= from <= to <= 24*60)
 - to: number (required, 0 <= from <= to <= 24*60)
-- image: string (optional)
+- imageURI: string (optional)

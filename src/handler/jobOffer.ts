@@ -150,7 +150,7 @@ export default class JobOfferHandler {
         return jobOffer;
     }
 
-    async createJobOffer(req: express.Request, res: express.Response): Promise<JobOffer> {
+    createJobOffer = async (req: express.Request, res: express.Response): Promise<JobOffer> => {
         const schema = Joi.object({
             title: Joi.string().required(),
             categories: Joi.array().items(Joi.number()).min(1).required(),
@@ -158,10 +158,10 @@ export default class JobOfferHandler {
             payment: Joi.number().greater(0).required(),
             description: Joi.string(),
             requirements: Joi.array().items(Joi.string()),
-            geoHash: Joi.string().required(),
+            geoHash: Joi.string().length(7).required(),
             from: Joi.number().min(0).max(24*60).required(),
             to: Joi.number().min(0).max(24*60).min(Joi.ref('from')).required(),
-            image: Joi.string(),
+            imageURI: Joi.string(),
         });
 
         const validationResult = await schema.validate(req.body);
@@ -169,12 +169,13 @@ export default class JobOfferHandler {
             throw new HttpBadRequestError(validationResult.error.message);
         }
 
-        // let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
+        let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
 
         const user = await req.getUser();
 
         const j = validationResult.value as IJobOffer;
         j.employerId = user.id;
+        j.geoHash = geoHash;
 
         const jobOffer = await JobOffer.createJobOffer(j);
         if (!jobOffer) throw new HttpBadRequestError();
