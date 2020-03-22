@@ -46,7 +46,7 @@ export default class JobOfferHandler {
     }
 
 
-    async getJobOffers(req: express.Request, res: express.Response): Promise<IJobOffer[]> {
+    getJobOffers = async (req: express.Request, res: express.Response): Promise<IJobOffer[]> => {
         const schema = Joi.object({
             skip: Joi.number().integer().min(0),
             take: Joi.number().integer().min(1),
@@ -55,13 +55,13 @@ export default class JobOfferHandler {
             categories: Joi.array().items(Joi.number().integer().min(0).max(Object.keys(Category).length)).unique(),
             from: Joi.number().min(0).max(24*60),
             to: Joi.number().min(0).max(24*60).min(Joi.ref('from')),
-            geo: Joi.string(),
+            geoHash: Joi.string().min(7).required(),
         });
         const validationResult = schema.validate(req.query);
         if (validationResult.errors) {
             throw new HttpBadRequestError(validationResult.errors.message);
         }
-        // let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
+        let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
 
         const from = validationResult.value.from ?? 0;
         const to = validationResult.value.to ?? 24*60;
@@ -158,7 +158,7 @@ export default class JobOfferHandler {
             payment: Joi.number().greater(0).required(),
             description: Joi.string(),
             requirements: Joi.array().items(Joi.string()),
-            geoHash: Joi.string().length(7).required(),
+            geoHash: Joi.string().min(7).required(),
             from: Joi.number().min(0).max(24*60).required(),
             to: Joi.number().min(0).max(24*60).min(Joi.ref('from')).required(),
             imageURI: Joi.string(),
@@ -186,6 +186,7 @@ export default class JobOfferHandler {
         let res;
         if (geoHash) {
             try {
+                console.log('geoHash', geoHash);
                 const { lat, lon } = Geohash.decode(geoHash); // Check for valid geohash
                 res = geoHash;
             } catch (err) {

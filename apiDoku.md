@@ -25,7 +25,7 @@ returns `IJobOffer[]`
 - categories: The categories
 - from: The start time in msnutes from 0 am  (integer, not required, 0 <= from <= to <= 24*60)
 - to: The end time in minutes from 0 am (integer, not required, 0 <= from <= to <= 24*60)
-- geo: coordinates of the offer as geohash (string, not required)
+- geoHash: coordinates of the offer as geohash, at least 7 characters (string, not required)
 
 ## GET /api/v1/jobOffer/:id
 returns `IJobOffer`
