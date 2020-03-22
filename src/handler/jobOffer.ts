@@ -72,7 +72,7 @@ export default class JobOfferHandler {
             where: {
                 from: MoreThanOrEqual(from),
                 to: LessThanOrEqual(to),
-                description: validationResult.value.search ? Like(`${validationResult.value.search}`) : undefined,
+                // description: Like(`${validationResult.value.search}`),
             },
         });
 
