@@ -8,10 +8,10 @@ export const initializeDatabase = async () => {
     console.log(environmentVariables.postgresHost);
 
     let entityPath;
-    if (process.env.NODE_ENV === 'production') {
-        entityPath = "database/entity/**/*.js"
-    }
-    entityPath = (__filename.split('.')[1] === 'ts') ? "src/database/entity/**/*.ts" : "dist/database/entity/**/*.js";
+    if (process.env.NODE_ENV === 'production')
+        entityPath = "database/entity/**/*.js";
+    else
+        entityPath = (__filename.split('.')[1] === 'ts') ? "src/database/entity/**/*.ts" : "dist/database/entity/**/*.js";
 
     const options: ConnectionOptions = {
         type: "postgres",
