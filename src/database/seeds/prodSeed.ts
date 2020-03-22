@@ -4,6 +4,18 @@ import faker from 'faker';
 import {EmployerInformation} from "../entity/employerInformation";
 import shortid from "shortid";
 
+function getRandomSubarray(arr: any[], size: number) {
+    var shuffled = arr.slice(0), i = arr.length, temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(0, size);
+}
+
+
 export async function prodSeed() {
     if (process.env.NODE_ENV !== 'production') {
         throw Error("Trying to seed prod into non prod db!")
@@ -89,8 +101,8 @@ async function createOffer(template: ITemplate) {
         from: template.from,
         to: template.to,
         imageURI: template.imageURI,
-        categories: [1, 2],
-        workdays: [0, 1, 4],
+        categories: getRandomSubarray([0, 1, 2, 3, 4], 1),
+        workdays: getRandomSubarray([0, 1, 2, 3, 4, 5, 6], 3),
         requirements: []
     });
     await offer.save();
