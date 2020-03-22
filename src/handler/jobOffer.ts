@@ -86,7 +86,13 @@ export default class JobOfferHandler {
             results = results.filter(offer => offer.categories.filter(value => categories.includes(value.toString())).length > 0);
         }
 
-        results = results.slice(validationResult.value.skip, validationResult.value.take);
+        if (validationResult.value.skip && validationResult.value.take) {
+            results = results.slice(validationResult.value.skip, validationResult.value.take + validationResult.value.skip);
+        } else if (validationResult.value.skip) {
+            results = results.slice(validationResult.value.skip, undefined);
+        } else if (validationResult.value.take) {
+            results = results.slice(0, validationResult.value.take);
+        }
         return results.map(a => a.toIJobOffer());
     }
 
