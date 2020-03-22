@@ -14,8 +14,18 @@ returns `IJobOffer[]`
 ## GET /api/v1/users/:id
 returns `IUser` with corresponding id
 
-## GET /api/v1/jobOffer?limit=?skip=?search=?categories=?workdays=?from=?to=?geo=?
+## GET /api/v1/jobOffer?take=?skip=?search=?categories=?workdays=?from=?to=?geo=?
 returns `IJobOffer[]`
+
+### Request params
+- skip: Offset (pagination) from where entities should be taken (integer, not required)
+- take: Limit (pagination) - max number of entities that shuld be taken (integer, not required)
+- search: Full text search in description
+- workdays: The workdays (monday = 0, sunday = 6, not required)
+- categories: The categories
+- from: The start time in msnutes from 0 am  (integer, not required, 0 <= from <= to <= 24*60)
+- to: The end time in minutes from 0 am (integer, not required, 0 <= from <= to <= 24*60)
+- geo: coordinates of the offer as geohash (string, not required)
 
 ## GET /api/v1/jobOffer/:id
 returns `IJobOffer`
@@ -47,8 +57,9 @@ adds a new chat conversation (worker only!)
 
 ## POST /api/v1/jobOffer/create
 creates a new job offer
+returns `JobOffer`
 
-### Parameters
+### Request body parameters
 - categories: number[] (required, at least one)
 - workdays: number[] (required, at least one)
 - payment: number (required, > 1)

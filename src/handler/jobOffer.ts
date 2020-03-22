@@ -1,12 +1,13 @@
 import {router} from "../index";
 import express, {Request, Response} from "express"
 import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
-import {JobOffer} from "../database/entity/jobOffer";
+import {JobOffer, Workdays, Category} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
 import {authGuard} from "../middleware/authGuard.middleware";
 import {Conversation} from "../database/entity/conversation";
-
+import Geohash from 'unl-core';
+import { MoreThanOrEqual, LessThanOrEqual, In, Like } from "typeorm";
 
 export default class JobOfferHandler {
     async initialize() {
@@ -46,13 +47,61 @@ export default class JobOfferHandler {
 
 
     async getJobOffers(req: express.Request, res: express.Response): Promise<IJobOffer[]> {
-        return (await JobOffer.find()).map(a => a.toIJobOffer());
+        const schema = Joi.object({
+            skip: Joi.number().integer().min(0),
+            take: Joi.number().integer().min(1),
+            search: Joi.string(),
+            workdays: Joi.array().items(Joi.number().integer().min(0).max(Object.keys(Workdays).length)).unique(),
+            categories: Joi.array().items(Joi.number().integer().min(0).max(Object.keys(Category).length)).unique(),
+            from: Joi.number().min(0).max(24*60),
+            to: Joi.number().min(0).max(24*60).min(Joi.ref('from')),
+            geo: Joi.string(),
+        });
+        const validationResult = schema.validate(req.query);
+        if (validationResult.errors) {
+            throw new HttpBadRequestError(validationResult.errors.message);
+        }
+        // let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
+
+        const from = validationResult.value.from ?? 0;
+        const to = validationResult.value.to ?? 24*60;
+        let workdays: string[] = [];
+        let categories: string[] = [];
+
+        let results = await JobOffer.find({
+            where: {
+                from: MoreThanOrEqual(from),
+                to: LessThanOrEqual(to),
+                description: validationResult.value.search ? Like(`${validationResult.value.search}`) : undefined,
+            },
+        });
+
+        if (validationResult.value.workdays) {
+            workdays = (validationResult.value.workdays as number[]).map(item => item.toString());
+            results = results.filter(offer => offer.workdays.filter(value => workdays.includes(value.toString())).length > 0);
+        }
+        
+        if  (validationResult.value.categories) {
+            categories = (validationResult.value.categories as number[]).map(item => item.toString());
+            results = results.filter(offer => offer.categories.filter(value => categories.includes(value.toString())).length > 0);
+        }
+
+        results = results.slice(validationResult.value.skip, validationResult.value.take);
+        return results.map(a => a.toIJobOffer());
     }
 
 
     async getJobOffer(req: express.Request, res: express.Response) {
-        const jobOffer = await JobOfferHandler.findOneJobOffer(req, res);
-        return jobOffer.toIJobOffer()
+        const schema = Joi.object({
+            id: Joi.string().required(),
+        });
+        const validationResult = await schema.validate(req.params);
+        if (validationResult.error) {
+            throw new HttpBadRequestError(validationResult.error.message);
+        }
+
+        const jobOffer = await JobOfferHandler.findOneJobOffer(validationResult.value, res);
+        return jobOffer.toIJobOffer();
     }
 
     async bookmarkJobOffer(req: express.Request, res: express.Response) {
@@ -96,23 +145,34 @@ export default class JobOfferHandler {
             throw new HttpBadRequestError(validationResult.error.message);
         }
 
-        // TODO: Check if Geohash is valid
+        // let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
 
         const user = await req.getUser();
 
-        // const employerInformation = await EmployerInformation.findOne({
-        //     where: {
-        //         uid: user.id,
-        //     },
-        //     relations: ['users']
-        // });
-
         const j = validationResult.value as IJobOffer;
         j.employerId = user.id;
-        // j.employer = employerInformation;
 
         const jobOffer = await JobOffer.createJobOffer(j);
         if (!jobOffer) throw new HttpBadRequestError();
         return jobOffer;
+    }
+
+    verifyGeoHash(geoHash: string, lat: number, lon: number): string {
+        let res;
+        if (geoHash) {
+            try {
+                const { lat, lon } = Geohash.decode(geoHash); // Check for valid geohash
+                res = geoHash;
+            } catch (err) {
+                throw new HttpBadRequestError('Bad geohash format!');
+            }
+        } else {
+            try {
+                res = Geohash.encode(lat, lon);
+            } catch (err) {
+                throw new HttpBadRequestError('Bad lat/lon format!');
+            }
+        }
+        return res;
     }
 }
