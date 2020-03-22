@@ -29,12 +29,15 @@ export class ChatMessage extends BaseEntity {
     @Column({type: "bigint"})
     createdAt: number = Date.now();
 
-    toIChatMessage() {
+    async toIChatMessage() {
+        const au = await this.author;
         return {
             id: this.id,
             conversationId: this.conversationId,
             message: this.message,
-            createdAt: this.createdAt
+            createdAt: this.createdAt,
+            authorName: au.firstName + " " + au.lastName,
+            authorImageUri: au.profilePicture,
         } as IChatMessage
     }
 }

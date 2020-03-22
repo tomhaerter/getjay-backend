@@ -21,6 +21,9 @@ export class User extends BaseEntity {
     @Column()
     email: string;
 
+    @Column({nullable: true})
+    profilePicture?: string;
+
     @ManyToMany(type => JobOffer, jobOffer => jobOffer.usersBookmarked)
     @JoinTable()
     bookmarkedJobOffers: Promise<JobOffer[]>;
@@ -126,6 +129,7 @@ export class User extends BaseEntity {
         u.firstName = name[0];
         u.lastName = firebaseUser.displayName.split(" ").slice(1).join(" ");
         u.email = firebaseUser.email;
+        u.profilePicture = firebaseUser.photoURL;
 
         await u.save();
         return u;

@@ -59,4 +59,6 @@ export interface IChatMessage {
     message: string;
     authorId: string;
     createdAt: number;
+    authorName: string;
+    authorImageUri?: string;
 }

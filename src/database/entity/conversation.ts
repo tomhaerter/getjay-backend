@@ -36,7 +36,7 @@ export class Conversation extends BaseEntity {
             id: this.id,
             workerId: this.workerId,
             jobOfferId: this.jobOfferId,
-            messages: (await this.messages).map(msg => msg.toIChatMessage())
+            messages: await Promise.all((await this.messages).map(msg => msg.toIChatMessage()))
         } as IConversation
     }
 
