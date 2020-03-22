@@ -20,6 +20,15 @@ export async function prodSeed() {
         });
 
         await createOffer({
+            title: "U.K.A. Facility Service GmbH",
+            payment: 15,
+            description: "Ich suche einen Mitarbeiter Gartenbau (m/w/d) zur Unterstützung für die Betreuung von Gartenarbeiten, Mithilfe von Umsetzen von Gartenbauprojekten für Wohngebäude und Bürogebäude. Handwerkliche Kenntnisse sind von Vorteil, aber keine Bedingung, kann angelernt werden.<br>Gärtnerische Tätigkeiten müssen in bestehenden Objekten übernommen werden (Heckenschnitt,Rasen mähen, Anpflanzungen etc.)<br>*Führerschein Klasse 3 oder B erwünscht.<br>*Gute Deutschkenntnisse sind wünschenswert<br>Weitere Informationen erhalten Sie auf Anfrage",
+            from: 60 * 7 + 30,
+            to: 60 * 15,
+            imageURI: "https://images.pexels.com/photos/2886937/pexels-photo-2886937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        });
+
+        await createOffer({
             title: "SalService",
             payment: 30,
             description: "Auch in Zeiten der Krise muss der wirtschaftliche Motor weiterlaufen. Wir möchten allen Personen die in einer wirtschaftlicher Form darunter leiden, so gut es geht helfen und dazu Beitragen, dass die Krise gut überstanden wird.<br>Das bieten wir:<br>*Potentiellen Ausweg aus der Krise mit einem neuen Job<br>*Übertarifliche Bezahlung nach Tariflohn der IGZ<br>*Zahlung von Weihnachts- und Urlaubsgeld<br>*Zuschläge für Sonn- und Feiertage<br>*Persönliche Ansprechpartner<br>*Und vieles mehr...<br>Weitere Informationen zu benötigten Qualifikationen erhalten Sie auf Anfrage",
@@ -45,16 +54,6 @@ export async function prodSeed() {
             to: 60 * 8,
             imageURI: "https://images.pexels.com/photos/3687999/pexels-photo-3687999.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
         });
-
-        await createOffer({
-                title: "U.K.A. Facility Service GmbH",
-                payment: 15,
-                description: "Ich suche einen Mitarbeiter Gartenbau (m/w/d) zur Unterstützung für die Betreuung von Gartenarbeiten, Mithilfe von Umsetzen von Gartenbauprojekten für Wohngebäude und Bürogebäude. Handwerkliche Kenntnisse sind von Vorteil, aber keine Bedingung, kann angelernt werden.<br>Gärtnerische Tätigkeiten müssen in bestehenden Objekten übernommen werden (Heckenschnitt,Rasen mähen, Anpflanzungen etc.)<br>*Führerschein Klasse 3 oder B erwünscht.<br>*Gute Deutschkenntnisse sind wünschenswert<br>Weitere Informationen erhalten Sie auf Anfrage",
-                from: 60 * 7 + 30,
-                to: 60 * 15,
-                imageURI: "https://images.pexels.com/photos/2886937/pexels-photo-2886937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            }
-        )
     }
 }
 
