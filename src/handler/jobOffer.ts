@@ -68,13 +68,23 @@ export default class JobOfferHandler {
         let workdays: string[] = [];
         let categories: string[] = [];
 
-        let results = await JobOffer.find({
-            where: {
-                from: MoreThanOrEqual(from),
-                to: LessThanOrEqual(to),
-                // description: Like(`${validationResult.value.search}`),
-            },
-        });
+        let results;
+        if (validationResult.value.search) {
+            results = await JobOffer.find({
+                where: {
+                    from: MoreThanOrEqual(from),
+                    to: LessThanOrEqual(to),
+                    title: Like(`%${validationResult.value.search}%`),
+                },
+            });
+        } else {
+            results = await JobOffer.find({
+                where: {
+                    from: MoreThanOrEqual(from),
+                    to: LessThanOrEqual(to),
+                },
+            });
+        }
 
         if (validationResult.value.workdays) {
             workdays = (validationResult.value.workdays as number[]).map(item => item.toString());
