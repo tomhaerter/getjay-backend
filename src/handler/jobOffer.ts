@@ -1,12 +1,13 @@
 import {router} from "../index";
 import express from "express"
 import {HttpBadRequestError, HttpNotFoundError, wrap} from "../errorHandler";
-import {JobOffer} from "../database/entity/jobOffer";
+import {JobOffer, Workdays, Category} from "../database/entity/jobOffer";
 import Joi from '@hapi/joi';
 import { IJobOffer } from "../types/api";
 import {authGuard} from "../middleware/authGuard.middleware";
 import Geohash from 'unl-core';
-import { MoreThan, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
+import { MoreThan, MoreThanOrEqual, LessThanOrEqual, In } from "typeorm";
+import { valid } from "joi";
 
 export default class JobOfferHandler {
     async initialize() {
@@ -22,32 +23,41 @@ export default class JobOfferHandler {
             skip: Joi.number().integer().min(0),
             take: Joi.number().integer().min(1),
             search: Joi.string(),
-            workdays: Joi.array().items(Joi.number().integer()),
-            categories: Joi.array().items(Joi.number().integer()),
+            workdays: Joi.array().items(Joi.number().integer().min(0).max(Object.keys(Workdays).length)).unique(),
+            categories: Joi.array().items(Joi.number().integer().min(0).max(Object.keys(Category).length)).unique(),
             from: Joi.number().min(0).max(24*60),
             to: Joi.number().min(0).max(24*60).min(Joi.ref('from')),
             geo: Joi.string(),
         });
-        console.log('req.params', req.query);
         const validationResult = schema.validate(req.query);
         if (validationResult.errors) {
             throw new HttpBadRequestError(validationResult.errors.message);
         }
-        console.log('validateion value', validationResult.value);
         // let geoHash = this.verifyGeoHash(validationResult.value.geoHash, validationResult.value.lat, validationResult.value.lon);
 
         const from = validationResult.value.from ?? 0;
         const to = validationResult.value.to ?? 24*60;
-        const workdays = (validationResult.value.workdays as number[] ?? [0, 1, 2, 3, 4, 5, 6]).map(item => item.toString());
-        const results = await JobOffer.find({
+        let workdays: string[] = [];
+        let categories: string[] = [];
+
+        let results = await JobOffer.find({
             where: {
                 from: MoreThanOrEqual(from),
                 to: LessThanOrEqual(to),
             },
-            take: validationResult.value.take,
-            skip: validationResult.value.skip,
         });
 
+        if (validationResult.value.workdays) {
+            workdays = (validationResult.value.workdays as number[]).map(item => item.toString());
+            results = results.filter(offer => offer.workdays.filter(value => workdays.includes(value.toString())).length > 0);
+        }
+        
+        if  (validationResult.value.categories) {
+            categories = (validationResult.value.categories as number[]).map(item => item.toString());
+            results = results.filter(offer => offer.categories.filter(value => categories.includes(value.toString())).length > 0);
+        }
+
+        results = results.slice(validationResult.value.skip, validationResult.value.take);
         return results.map(a => a.toIJobOffer());
     }
 
