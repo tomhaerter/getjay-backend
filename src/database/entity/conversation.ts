@@ -41,7 +41,7 @@ export class Conversation extends BaseEntity {
     }
 
     static async getBetween(workerId: string, offerId: string, create = false) {
-        let conversation = await Conversation.findOne({where: {workerId, offerId}});
+        let conversation = await Conversation.findOne({where: {workerId: workerId, jobOfferId: offerId}});
         if (!create) {
             if (!conversation) throw new HttpNotFoundError("Chat not found");
             if (conversation.archived) throw new HttpNotFoundError("Chat was archived!");
