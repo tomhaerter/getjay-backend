@@ -9,7 +9,7 @@ to install the dependencies.
 
 ## Environment variables
 Sensitive data is stored in `.env`-files in a folder called `environments` in the root project.
-Create a folder `environments` in the projct root and create the files `.env.test` and `.env.development` in this folder. Each of these files needs to have the following variables set:
+Create a folder `environments` in the projct root and create the file `.env`in this folder. The file `.env.example` contains a template with all the necessary environment variables. Their meanings are:
 - `POSTGRES_HOST`=[The postgres host. For docker-compose, this is the service name.]
 - `POSTGRES_PASSWORD`=[The password for the postgres database]
 - `POSTGRES_USER`=[The database user]
@@ -23,7 +23,7 @@ Create a folder `environments` in the projct root and create the files `.env.tes
 - `FIREBASE_STORAGE_BUCKET`=[The storage bucket for the firebase project.]
 - `FIREBASE_MESSAGING_SENDER_ID`=[The messaging sender id for the firebase project.]
 - `FIREBASE_APP_ID`=[The app id for the firebase project.]
-- `GOOGLE_APPLICATION_CREDENTIALS`=[Full path to json file with the credentials for the [service account](https://firebase.google.com/support/guides/service-accounts)]
+- `GOOGLE_APPLICATION_CREDENTIALS`=[Full path to json file with the credentials for the [service account](https://firebase.google.com/support/guides/service-accounts). If you use docker-compose, this needs to point to the location in the docker container, usually `/usr/app/[projectname]-firebase-adminsdk.json`, if you store your service account secret in the environments folder of this project.]
 
 You should use different firebase projects for development, testing and production.
 You can look at the `.env.example` file in the examples `environments` folder for a template for environment files.
