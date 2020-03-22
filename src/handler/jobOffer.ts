@@ -70,13 +70,21 @@ export default class JobOfferHandler {
 
         let results;
         if (validationResult.value.search) {
-            results = await JobOffer.find({
+            let titleSearchResult = await JobOffer.find({
                 where: {
                     from: MoreThanOrEqual(from),
                     to: LessThanOrEqual(to),
                     title: Like(`%${validationResult.value.search}%`),
                 },
             });
+            let descriptionSearchResult = await JobOffer.find({
+                where: {
+                    from: MoreThanOrEqual(from),
+                    to: LessThanOrEqual(to),
+                    description: Like(`%${validationResult.value.search}%`),
+                },
+            });
+            results = [...titleSearchResult, ...descriptionSearchResult];
         } else {
             results = await JobOffer.find({
                 where: {
