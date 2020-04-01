@@ -1,4 +1,4 @@
-import {createConnection, ConnectionOptions, getConnectionManager} from 'typeorm';
+import {ConnectionOptions, getConnectionManager} from 'typeorm';
 import {Connection} from "typeorm/connection/Connection";
 import {environmentVariables} from '../config/environment.config';
 

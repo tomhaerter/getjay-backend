@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+    title: Get-Jay API
+    version: '1'
+    description: API for the jay project
+    license:
+        name: MIT
+    contact:
+        url: 'https://github.com/dokedu/getjay-backend'
+servers:
+    - url: 'http://localhost:3000/api/v1'
+      description: Local Testing
+    - url: 'https://getjay-api.fourfive.studio/api/v1'
+      description: Production
+paths:
+    /user:
+        get:
+            summary: Your GET endpoint
+            tags:
+                - user
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+            operationId: get-user
+            description: Return all Users
+            security:
+                - Authorization: []
+components:
+    schemas:
+        User:
+            title: User
+            type: object
+            properties:
+                id:
+                    type: string
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+            required:
+                - id
+                - firstName
+                - lastName
+            description: Model for the User
+            x-examples:
+                Example: {}
+            x-tags:
+                - user
+    securitySchemes:
+        Authorization:
+            name: JWT
+            type: apiKey
+            in: header
+            description: Provide JWT in Authorization Header
+security: []
+tags:
+    - name: user
