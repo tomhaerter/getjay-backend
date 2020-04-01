@@ -13,9 +13,9 @@ servers:
     - url: 'https://getjay-api.fourfive.studio/api/v1'
       description: Production
 paths:
-    /user:
+    /users:
         get:
-            summary: Your GET endpoint
+            summary: GET Users
             tags:
                 - user
             responses:
